@@ -14,7 +14,7 @@
 # Update and install dependencies
 
 apt-get update
-apt-get install git live-build cdebootstrap devscripts -y
+apt-get install git live-build cdebootstrap debootstrap devscripts -y
 
 # Clone the default Kali live-build config.
 
