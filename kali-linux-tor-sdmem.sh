@@ -41,19 +41,11 @@ kali-archive-keyring
 debian-installer-launcher
 alsa-tools
 locales-all
-tor
 secure-delete
+tor
 xorg
-kali-linux-full
+#kali-linux-all
 EOF
-
-# Add the new Mate 1.8 as a Windows Manager.
-# We instruct live-build to add external MATE repositories and add relevant keys.
-# Taken from http://wiki.mate-desktop.org/download
-
-#mkdir -p config/archives/
-#echo "deb http://repo.mate-desktop.org/archive/1.8/debian/ wheezy main" > config/archives/mate.list.chroot
-#wget http://mirror1.mate-desktop.org/debian/mate-archive-keyring.gpg -O config/archives/mate.key.chroot
 
 # We download new icons and apply them.
 
@@ -61,25 +53,7 @@ mkdir ~/.icons
 wget http://buuficontheme.free.fr/buuf3.2.tar.xz
 tar Jxf buuf3.2.tar.xz -C ~/.icons/
 dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface icon-theme 'buuf3.2'
-
-# We add a chroot hook to add the MATE archive-keyring, and install MATE. 
-# We even configure some of the terminal settings and wallpaper.
-
-#cat > config/hooks/mate.chroot<< EOF
-#!/bin/bash
-#wget http://mirror1.mate-desktop.org/debian/mate-archive-keyring.gpg
-#apt-key add mate-archive-keyring.gpg
-#rm -rf mate-archive-keyring.gpg
-
-#apt-get --yes --force-yes --quiet --allow-unauthenticated install mate-core mate-desktop-environment-extra
-
-#dbus-launch --exit-with-session gsettings set org.mate.background picture-filename '/usr/share/wallpapers/kali/contents/images/kali_linux.jpg'
-#dbus-launch --exit-with-session gsettings set org.mate.interface gtk-theme 'BlackMATE'
-#dbus-launch --exit-with-session gsettings set org.mate.interface icon-theme 'mate'
-#dbus-launch --exit-with-session gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ background-darkness 0.86
-#dbus-launch --exit-with-session gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ background-type 'transparent'
-#dbus-launch --exit-with-session gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ background-color '#FFFFFFFFDDDD'
-#dbus-launch --exit-with-session gsettings set org.mate.terminal.profile:/org/mate/terminal/profiles/default/ scrollback-unlimited true
+rm buuf3.2.tar.xz
 
 cp -rf /root/.icons /etc/skel/
 
