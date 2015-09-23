@@ -3,11 +3,11 @@
 # Kali Linux ISO recipe for : TOR support and sdmem wipe
 #########################################################################################
 # Desktop 	: GNOME
-# Metapackages	: kali-linux-top10
-# ISO size 	: 1.36 GB 
+# Metapackages	: kali-linux-full
+# ISO size 	: ?.?? GB 
 # Special notes	: Non root user installation enabled through preseed.cfg. 
-#		: This script is not meant to run unattended.
-# Look and Feel	: Custom wallpaper and terminal configs through post install hooks.
+#	              : This script is not meant to run unattended.
+# Look and Feel	: Custom icons and terminal configs through post install hooks.
 # Background	: http://www.offensive-security.com/kali-linux/kali-linux-recipes/
 #########################################################################################
 
@@ -29,8 +29,7 @@ apt-get source debian-installer
 
 cd live-build-config
 
-# The user doesn't need the kali-linux-full metapackage, we overwrite with our own basic packages.
-# This includes the debian-installer and the kali-linux-top10 metapackage (commented out for brevity of build, uncomment if needed).
+# Add additional packages to the kali list.
 
 cat > config/package-lists/kali.list.chroot << EOF
 kali-root-login
@@ -40,14 +39,16 @@ kali-debtags
 kali-archive-keyring
 debian-installer-launcher
 alsa-tools
-locales-all
+figlet
+htop
+privoxy
 secure-delete
 tor
 xorg
-#kali-linux-all
+kali-linux-full
 EOF
 
-# We download new icons and apply them.
+# Download new icons and apply them.
 
 mkdir ~/.icons
 wget http://buuficontheme.free.fr/buuf3.2.tar.xz
