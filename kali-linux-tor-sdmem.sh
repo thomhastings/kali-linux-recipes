@@ -29,7 +29,7 @@ apt-get source debian-installer
 
 cd live-build-config
 
-# Add additional packages to the kali list.
+# We add additional packages to the kali list.
 
 cat >> kali-config/variant-default/package-lists/kali.list.chroot << EOF
 
@@ -49,6 +49,15 @@ tor
 torsocks
 xorg
 EOF
+
+# We modify the default Kali preseed which disables normal user creation. 
+# We copied this from the debian installer package we initially downloaded.
+
+mkdir -p kali-config/debian-installer
+cp ../debian-installer-*/build/preseed.cfg kali-config/debian-installer/
+sed -i 's/make-user boolean false/make-user boolean true/' kali-config/debian-installer/preseed.cfg
+echo "d-i passwd/root-login boolean false" >> kali-config/debian-installer/preseed.cfg
+rm -rf debian-installer-*
 
 # We add hooks from knife by kaneda.
 
@@ -87,14 +96,6 @@ cp -rf /root/.icons /etc/skel/
 cp -rf /root/.bin /etc/skel/
 
 # TODO: Incorporate https://github.com/DanMcInerney/fakeAP
-
-# We modify the default Kali preseed which disables normal user creation. 
-# We copied this from the debian installer package we initially downloaded.
-
-mkdir -p config/debian-installer
-cp ../debian-installer-*/build/preseed.cfg config/debian-installer/
-sed -i 's/make-user boolean false/make-user boolean true/' config/debian-installer/preseed.cfg
-echo "d-i passwd/root-login boolean false" >> config/debian-installer/preseed.cfg
 
 # Go ahead and run the build!
 lb build
