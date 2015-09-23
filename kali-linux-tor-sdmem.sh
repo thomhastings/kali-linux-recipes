@@ -31,7 +31,9 @@ cd live-build-config
 
 # Add additional packages to the kali list.
 
-cat > config/package-lists/kali.list.chroot << EOF
+cat > kali-config/variant-default/package-lists/kali.list.chroot << EOF
+
+# Customizations
 kali-root-login
 kali-defaults
 kali-menu
@@ -45,7 +47,6 @@ privoxy
 secure-delete
 tor
 xorg
-kali-linux-full
 EOF
 
 # Download new icons and apply them.
