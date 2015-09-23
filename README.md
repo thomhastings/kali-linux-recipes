@@ -7,7 +7,5 @@ build and generate an ISO file....good luck with your Kali cooking. Do you have 
 
 kali-linux-tor-sdmem.sh
 =======================
-Inspired by [TAILS](https://tails.boum.org), this is a Kali linux recipe to generate an ISO with some additional features related to anonymity.
-[![Creative Commons License](http://i.creativecommons.org/l/by/3.0/80x15.png)](http://creativecommons.org/licenses/by/3.0/)
-[![Open Source](http://www.ipol.im/static/badges/open-source.png)](http://opensource.org/licenses/BSD-3-Clause)
-[![Hacker Emblem](http://catb.org/hacker-emblem/hacker.png)](http://www.catb.org/hacker-emblem/)
+Inspired by [TAILS](https://tails.boum.org), this is a Kali linux recipe to generate an ISO with some additional features related to anonymity and some additional tools from kaneda's [Knife](https://github.com/kaneda/knife).  
+[![Creative Commons License](http://i.creativecommons.org/l/by/3.0/80x15.png)](http://creativecommons.org/licenses/by/3.0/)[![Open Source](http://www.ipol.im/static/badges/open-source.png)](http://opensource.org/licenses/BSD-3-Clause)[![Hacker Emblem](http://catb.org/hacker-emblem/hacker.png)](http://www.catb.org/hacker-emblem/)
