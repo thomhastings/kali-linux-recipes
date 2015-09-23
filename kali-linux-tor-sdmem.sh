@@ -14,16 +14,11 @@
 # Update and install dependencies
 
 apt-get update
-apt-get install live-build cdebootstrap debootstrap devscripts -y -qq
+apt-get install git live-build cdebootstrap debootstrap devscripts -y -qq
 
 # Clone the default Kali live-build config.
 
 git clone git://git.kali.org/live-build-config.git
-
-# Get the source package of the debian installer. 
-# The default Kali preseed file lives here, and will need changing for non-root user support.
-
-apt-get source debian-installer
 
 # Let's begin our customisations:
 
@@ -50,18 +45,24 @@ torsocks
 xorg
 EOF
 
-# We modify the default Kali preseed which disables normal user creation. 
-# We copied this from the debian installer package we initially downloaded.
+# We download new icons and apply them.
 
-mkdir -p kali-config/debian-installer
-cp ../debian-installer-*/build/preseed.cfg kali-config/debian-installer/
-sed -i 's/make-user boolean false/make-user boolean true/' kali-config/debian-installer/preseed.cfg
-echo "d-i passwd/root-login boolean false" >> kali-config/debian-installer/preseed.cfg
-rm -rf debian-installer-*
+cd kali-config/common/includes.chroot/
+wget http://buuficontheme.free.fr/buuf3.2.tar.xz
+mkdir .icons && tar Jxf buuf3.2.tar.xz -C .icons/
+dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface icon-theme 'buuf3.2'
+rm buuf3.2.tar.xz
+
+# We download and link a wget-all script.
+
+mkdir .bin && cd .bin
+wget https://raw.githubusercontent.com/thomhastings/os-scripts/master/wgetall.sh
+chmod +x wgetall.sh
+ln -s wgetall.sh wget-all
 
 # We add hooks from knife by kaneda.
 
-cd kali-config/common/hooks
+cd ../hooks
 wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0010sleep.chroot
 wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0020wipe-mem.chroot
 wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0030ronin-install.chroot
@@ -73,27 +74,6 @@ chmod +x *.chroot
 cd ../includes.chroot/lib/live/config
 wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/includes.chroot/etc/init.d/sdmem
 chmod +x sdmem
-
-# We download new icons and apply them.
-
-cd /tmp
-wget http://buuficontheme.free.fr/buuf3.2.tar.xz
-mkdir ~/.icons && tar Jxf buuf3.2.tar.xz -C ~/.icons/
-dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface icon-theme 'buuf3.2'
-rm buuf3.2.tar.xz
-
-# We download and link a wget-all script.
-
-mkdir ~/.bin && cd ~/.bin
-wget https://raw.githubusercontent.com/thomhastings/os-scripts/master/wgetall.sh
-chmod +x wgetall.sh
-ln -s wgetall.sh wget-all
-
-# We make root user dotfiles the user default.
-
-cp -rf /root/.config /etc/skel/
-cp -rf /root/.icons /etc/skel/
-cp -rf /root/.bin /etc/skel/
 
 # TODO: Incorporate https://github.com/DanMcInerney/fakeAP
 
