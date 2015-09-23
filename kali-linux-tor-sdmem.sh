@@ -31,7 +31,7 @@ cd live-build-config
 
 # Add additional packages to the kali list.
 
-cat > kali-config/variant-default/package-lists/kali.list.chroot << EOF
+cat >> kali-config/variant-default/package-lists/kali.list.chroot << EOF
 
 # Customizations
 kali-root-login
@@ -85,8 +85,6 @@ ln -s wgetall.sh wget-all
 cp -rf /root/.config /etc/skel/
 cp -rf /root/.icons /etc/skel/
 cp -rf /root/.bin /etc/skel/
-
-EOF # I'm not sure why this is here, I kept it from the example script.
 
 # TODO: Incorporate https://github.com/DanMcInerney/fakeAP
 
