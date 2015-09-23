@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Kali Linux ISO recipe for : TOR support and sdmem wipe
+# Kali Linux ISO recipe for : TOR support and sdmem wipe, codename "Tanto"
 #########################################################################################
 # Desktop 	: GNOME
 # Metapackages	: kali-linux-full
@@ -14,7 +14,7 @@
 # Update and install dependencies
 
 apt-get update
-apt-get install git live-build cdebootstrap debootstrap devscripts -y
+apt-get install live-build cdebootstrap debootstrap devscripts -y -qq
 
 # Clone the default Kali live-build config.
 
@@ -46,20 +46,49 @@ htop
 privoxy
 secure-delete
 tor
+torsocks
 xorg
 EOF
 
-# Download new icons and apply them.
+# We add hooks from knife by kaneda.
 
+cd kali-config/common/hooks
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0010sleep.chroot
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0020wipe-mem.chroot
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0030ronin-install.chroot
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0060hashkill-install.chroot
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0070fakeap-install.chroot
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0080quicksnap-install.chroot
+# wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/hooks/0090theme.chroot # commented out until tanto.png can be included
+sed -i 's/etc\/init.d/lib\/live\/config/' 0020wipe-mem.chroot # update mem=wipe to new location of sdmem (init.d deprecated)
+chmod +x *.chroot
+cd ../includes.chroot/lib/live/config
+wget https://raw.githubusercontent.com/kaneda/knife/master/live-build-config/config/includes.chroot/etc/init.d/sdmem
+chmod +x sdmem
+
+# We download new icons and apply them.
+
+cd ~
 mkdir ~/.icons
 wget http://buuficontheme.free.fr/buuf3.2.tar.xz
 tar Jxf buuf3.2.tar.xz -C ~/.icons/
 dbus-launch --exit-with-session gsettings set org.gnome.desktop.interface icon-theme 'buuf3.2'
 rm buuf3.2.tar.xz
 
-cp -rf /root/.icons /etc/skel/
+# We download and link a wget-all script.
 
-EOF
+mkdir ~/.bin
+cd ~/.bin
+wget https://raw.githubusercontent.com/thomhastings/os-scripts/master/wgetall.sh
+chmod +x wgetall.sh
+ln -s wgetall.sh wget-all
+
+# We make root user dotfiles the user default.
+
+cp -rf /root/.icons /etc/skel/
+cp -rf /root/.bin /etc/skel/
+
+EOF # I'm not sure why this is here, I kept it from the example script.
 
 # We modify the default Kali preseed which disables normal user creation. 
 # We copied this from the debian installer package we initially downloaded.
